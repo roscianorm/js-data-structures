@@ -54,19 +54,19 @@ class doublyLinkedList {
 		}
 		return currentNode
 	}
-
 	remove(index) {
 		if (index < 0 || index > this.length) {
 			return `There is no node at index ${index}`
 		} else if (index === 0) {
-			return shift()
+			return this.shift()
 		} else if (index === this.length - 1) {
-			return unshift()
+			return this.unshift()
 		}
-		const firstPointer = this.getTheIndex(index - 1)
 		const toDeleteNode = this.getTheIndex(index)
+		const firstPointer = toDeleteNode.prev
 		const holdingPointer = toDeleteNode.next
 		firstPointer.next = holdingPointer
+		holdingPointer.prev = firstPointer
 		this.length--
 		return toDeleteNode
 	}
