@@ -1,51 +1,36 @@
-// 1 --> 2 --> 3 --> 4 --> 5 --> null
-
-// let singlyLinkedList = {
-// 	head: {
-// 		value: 1,
-// 		next: {
-// 			value: 2,
-// 			next: {
-// 				value: 3,
-// 				next: {
-// 					value: 4,
-// 					next: null
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
 class Node {
 	constructor(value) {
 		this.value = value
 		this.next = null
+		this.prev = null
 	}
 }
 
-class SinglyLinkedList {
+class doublyLinkedList {
 	constructor(value) {
-		this.head = {
-			value: value,
-			next: null,
-		}
+		this.head = new Node(value)
 		this.tail = this.head
 		this.length = 1
 	}
 	append(value) {
 		const newNode = new Node(value)
+		newNode.prev = this.tail
 		this.tail.next = newNode
 		this.tail = newNode
+		this.tail.prev = newNode.prev
 		this.length++
 		return this
 	}
 	prepend(value) {
 		const newNode = new Node(value)
+		newNode.prev = null
 		newNode.next = this.head
+		this.head.prev = newNode
 		this.head = newNode
 		this.length++
 		return this
 	}
+
 	insert(index, value) {
 		if (index >= this.length) {
 			return this.append(value)
@@ -54,8 +39,11 @@ class SinglyLinkedList {
 		const firstPointer = this.getTheIndex(index - 1)
 		const holdingPointer = firstPointer.next
 		firstPointer.next = newNode
+		newNode.prev = firstPointer
+		holdingPointer.prev = newNode
 		newNode.next = holdingPointer
 		this.length++
+		return this
 	}
 	getTheIndex(index) {
 		let counter = 0
@@ -66,6 +54,7 @@ class SinglyLinkedList {
 		}
 		return currentNode
 	}
+
 	remove(index) {
 		if (index < 0 || index > this.length) {
 			return `There is no node at index ${index}`
@@ -84,9 +73,16 @@ class SinglyLinkedList {
 	shift() {
 		if (this.length === 0) {
 			return 'The list is empty'
+		} else if (this.length === 1) {
+			const toDeleteNode = this.tail
+			this.tail = null
+			this.head = null
+			this.length--
+			return toDeleteNode
 		}
 		const toDeleteNode = this.head
 		this.head = this.head.next
+		this.head.prev = null
 		this.length--
 		if (this.length === 1) {
 			this.tail = this.head
@@ -114,13 +110,7 @@ class SinglyLinkedList {
 	}
 }
 
-let myLL = new SinglyLinkedList('ancient butter')
-myLL.append('milk')
-myLL.append('cheese')
-myLL.prepend('butter')
-myLL.prepend('yogurt')
-console.log(myLL)
-myLL.insert(1, 'mayonnaise1')
-myLL.insert(2, 'mayonnaise2')
-myLL.insert(3, 'mayonnaise3')
-console.log(myLL)
+let myDLL = new doublyLinkedList('c')
+myDLL.prepend('b')
+myDLL.prepend('a')
+myDLL.append('d')
